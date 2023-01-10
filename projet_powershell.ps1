@@ -58,21 +58,21 @@ function DisplayMenu {
     
     3{
     Write-Host "choisire une OU à arreter"
-    Write-Host "class1"
-    Write-Host "class2"
+    Write-Host "1) class1"
+    Write-Host "2) class2"
     
-    $choix = Read-Host 
+    $choix = Read-Host "choisir une OU : "
     
     Switch($choix)
     {
     1{
-    $Computers = Get-ADComputer -SearchBase "OU=class1,DC=projet,DC=local" -Filter *
-    $Computers | Foreach-Object { Shutdown /s /m \\$_.DNSHostName /t 0 }
+    $Computers = Get-ADComputer -SearchBase "OU=class1,DC=projet,DC=local" -Filter * #doit etre loguer pour éteindre le pc
+    Invoke-Command -ComputerName $computers.Name -ScriptBlock {shutdown /s /t 0}
     }
     
     2{
     $Computers = Get-ADComputer -SearchBase "OU=class2,DC=projet,DC=local" -Filter *
-    $Computers | Foreach-Object { Shutdown /s /m \\$_.DNSHostName /t 0 }
+    Invoke-Command -ComputerName $computers.Name -ScriptBlock {shutdown /s /t 0}
     }
     }
     }
@@ -89,19 +89,3 @@ function DisplayMenu {
     }
     }
     DisplayMenu
-    
-    
-    #-------------------------------------------------------------------------------------------------------------------------
-    
-    
-    $Computers = Get-ADComputer -SearchBase "OU=class1,DC=projet,DC=local" -Filter *
-    $Computers
-    Invoke-Command -ComputerName $computers.Name -ScriptBlock {shutdown /s /t 0}
-    
-    Invoke-Command -computerName $Computers.name { shutdown -force }
-    
-    
-    
-    winrm invoke Restore winrm/Config
-    
-    winrm quickconfig
