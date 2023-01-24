@@ -12,7 +12,7 @@ function shutdown_pc {
   Import-Module ActiveDirectory
   [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
   $chemin = "C:\Users\$env:username\Desktop\pc.csv"
-  $pcToShutDown = Read-Host "Enter le debut du nom des PC a eteindre "
+  $pcToShutDown = Read-Host "Entrer le debut du nom des PC a eteindre "
   Get-ADComputer -Filter * | Where-Object { $_.name -match $pcToShutDown } | Select-Object Name | Export-Csv $chemin
   [System.Windows.Forms.MessageBox]::Show("Fichier pc.csv cree sur le Bureau", "Information" , 0, 64)
   $liste = Import-Csv "C:\Users\$env:username\Desktop\pc.csv"
