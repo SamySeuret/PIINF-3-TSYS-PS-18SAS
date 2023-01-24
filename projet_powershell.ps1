@@ -11,11 +11,11 @@
 function shutdown_pc {
   Import-Module ActiveDirectory
   [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
-  $chemin = "C:\Users\Administrator\Desktop\pc.csv"
+  $chemin = "C:\Users\$env:username\Desktop\pc.csv"
   $pcToShutDown = Read-Host "Enter le debut du nom des PC a eteindre "
   Get-ADComputer -Filter * | Where-Object { $_.name -match $pcToShutDown } | Select-Object Name | Export-Csv $chemin
   [System.Windows.Forms.MessageBox]::Show("Fichier pc.csv cree sur le Bureau", "Information" , 0, 64)
-  $liste = Import-Csv "C:\Users\Administrator\Desktop\pc.csv"
+  $liste = Import-Csv "C:\Users\$env:username\Desktop\pc.csv"
   $credential = Get-Credential -Credential "projet.local\administrator" #Mettre le nom de notre domaine
   ForEach ($item in $liste) { 
       Stop-Computer -ComputerName $item.Name -Force $credential 
@@ -34,7 +34,7 @@ function restart_pc {
 }
 
 function shutdown_classroom {
-  # Eteindre class
+  # Eteindre class 
   Write-Host "Choisir une classe : "
   Write-Host "1) Class1"
   Write-Host "2) Class2"
