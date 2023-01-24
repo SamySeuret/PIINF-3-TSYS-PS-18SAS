@@ -14,7 +14,7 @@ function DisplayMenu {
     +==============================+
     |                              |
     |        1) Eteindre PC        |
-    |        2) Redémarrer PC      |
+    |        2) Redemarrer PC      |
     |        3) Eteindre class     |
     |        4) Exit               |
     |                              |
@@ -32,16 +32,20 @@ function DisplayMenu {
             [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
     
             $chemin = "C:\Users\Administrator\Desktop\pc.csv"
+            $pcToShutDown = Read-Host "Enter le debut du nom des PC a eteindre "
     
-            Get-ADComputer -Filter * | Where-Object { $_.name -match "CEFF" } | Select-Object Name | Export-Csv $chemin
+            Get-ADComputer -Filter * | Where-Object { $_.name -match $pcToShutDown } | Select-Object Name | Export-Csv $chemin
     
-            [System.Windows.Forms.MessageBox]::Show("Fichier pc.csv crée sur le Bureau", "Information" , 0, 64)
+            [System.Windows.Forms.MessageBox]::Show("Fichier pc.csv cree sur le Bureau", "Information" , 0, 64)
     
             $liste = Import-Csv "C:\Users\Administrator\Desktop\pc.csv"
     
             $credential = Get-Credential -Credential "projet.local\administrator"
     
-            ForEach ($item in $liste) { Stop-Computer -ComputerName $item.Name -Force $credential }
+            ForEach ($item in $liste) 
+            { 
+            Stop-Computer -ComputerName $item.Name -Force $credential 
+          }
         }
     
         2 {
