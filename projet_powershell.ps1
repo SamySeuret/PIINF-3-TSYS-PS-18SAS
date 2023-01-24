@@ -4,7 +4,8 @@
 # 1) Eteindre PC - Eteint les ordinateurs à distance en utilisant le nom AD
 # 2) Redémarrer PC - Sélectionne une OU de l'Active Directory et redémarre les ordinateurs de cette OU
 # 3) Eteindre class - Sélectionne une classe de l'Active Directory et éteint les ordinateurs de cette classe
-# 4) Exit - Quitte le script
+# 4) Wake on LAN - Allume les ordinateurs qui sont dans le même réseau
+# 5) Exit - Quitte le script
 
 # Eteindre les PC à distance avec le nom AD
 function shutdown_pc {
@@ -15,7 +16,7 @@ function shutdown_pc {
   Get-ADComputer -Filter * | Where-Object { $_.name -match $pcToShutDown } | Select-Object Name | Export-Csv $chemin
   [System.Windows.Forms.MessageBox]::Show("Fichier pc.csv cree sur le Bureau", "Information" , 0, 64)
   $liste = Import-Csv "C:\Users\Administrator\Desktop\pc.csv"
-  $credential = Get-Credential -Credential "projet.local\administrator"
+  $credential = Get-Credential -Credential "projet.local\administrator" #Mettre le nom de notre domaine
   ForEach ($item in $liste) { 
       Stop-Computer -ComputerName $item.Name -Force $credential 
   }
