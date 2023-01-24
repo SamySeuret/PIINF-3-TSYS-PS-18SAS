@@ -13,7 +13,7 @@ function shutdown_pc {
   Import-Module ActiveDirectory
   [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
   $chemin = "C:\Users\$env:username\Desktop\pc.csv"
-  $pcToShutDown = Read-Host "Enter le debut du nom des PC a eteindre "
+  $pcToShutDown = Read-Host "Entrer le debut du nom des PC a eteindre "
   Get-ADComputer -Filter * | Where-Object { $_.name -match $pcToShutDown } | Select-Object Name | Export-Csv $chemin
   [System.Windows.Forms.MessageBox]::Show("Fichier pc.csv cree sur le Bureau", "Information" , 0, 64)
   $liste = Import-Csv "C:\Users\$env:username\Desktop\pc.csv"
@@ -139,8 +139,10 @@ while ($continue) {
       2 { restart_pc }
       3 { shutdown_classroom }
       4 {
+          $MacAddressShutDown = Read-Host -Prompt "Entrer l'adresse mac"
           carte_reseau
-          Invoke-WakeOnLan -MacAddress '40:8D:5C:71:11:D8'
+          Invoke-WakeOnLan -MacAddress "$MacAddressShutDown"
+          #Invoke-WakeOnLan -MacAddress '40:8D:5C:71:11:D8'
       }
       5 { $continue = $false }
       Default { Write-Host "Option non valide" -ForegroundColor Red -BackgroundColor Black }
