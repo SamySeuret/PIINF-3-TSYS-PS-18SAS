@@ -131,8 +131,10 @@ while ($continue) {
       2 { restart_pc }
       3 { shutdown_classroom }
       4 {
+          $MacAddressShutDown = Read-Host -Prompt "Entrer l'adresse mac"
           carte_reseau
-          Invoke-WakeOnLan -MacAddress '40:8D:5C:71:11:D8'
+          Invoke-WakeOnLan -MacAddress "$MacAddressShutDown"
+          #Invoke-WakeOnLan -MacAddress '40:8D:5C:71:11:D8'
       }
       5 { $continue = $false }
       Default { Write-Host "Option non valide" -ForegroundColor Red -BackgroundColor Black }
