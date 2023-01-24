@@ -8,6 +8,7 @@
 # 5) Exit - Quitte le script
 
 # Eteindre les PC à distance avec le nom AD
+# Création de la fonction ShutDown PC
 function shutdown_pc {
   Import-Module ActiveDirectory
   [System.Reflection.Assembly]::LoadWithPartialName("System.Windows.Forms")
@@ -22,7 +23,8 @@ function shutdown_pc {
   }
 }
 
-function restart_pc {
+# Création de la fonction Restart PC
+ function restart_pc {
   # Sélectionnez une OU à partir de l'Active Directory
   $OU = Get-ADOrganizationalUnit -Filter * | Out-GridView -Title 'Sélectionnez une OU' -PassThru
   # Récupérez tous les ordinateurs de l'OU sélectionnée
@@ -33,6 +35,8 @@ function restart_pc {
   Restart-Computer -ComputerName $ComputerToReboot -Force
 }
 
+
+# Création de la fonction Shuwdown de la classe
 function shutdown_classroom {
   # Eteindre class 
   Write-Host "Choisir une classe : "
@@ -53,10 +57,14 @@ function shutdown_classroom {
       }
   }
 }
+
+# Création de la fonction Carte réseau
 function Carte_reseau {
   #wake on lan pour un pc dans le meme réseau ne marche pas avec le VM
   Get-CimInstance -Query 'Select * From Win32_NetworkAdapter Where NetConnectionStatus=2' | Select-Object -Property Name, Manufacturer, MacAddress
 }
+
+# Création de la fonction du WakeOnLan
 function Invoke-WakeOnLan {
   param (
       # one or more MACAddresses
